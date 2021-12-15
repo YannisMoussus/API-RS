@@ -1,0 +1,21 @@
+//CREATION DU CONTAINER ET DE LA BDD
+
+docker run --name fastapi_rs -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres:alpine
+docker exec -it fastapi_rs bash
+psql -U postgres
+create database fastapi_database;
+create user myuser with encrypted password 'password';
+grant all privileges on database fastapi_database to myuser;
+\c fastapi_database
+psql -h localhost -p 5432 postgres
+\dt
+select * from user_post
+
+//CREATION DE L API
+python3 -m venv venv
+source venv/bin/activate
+pip3 install "fastapi[all]" SQLAlchemy psycopg2-binary 
+
+//ACCèS A LA DOC DE L API UNE FOIS LANCé
+uvicorn main:app --reload
+http://127.0.0.1:8000/docs
